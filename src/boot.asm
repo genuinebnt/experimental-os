@@ -1,45 +1,34 @@
-org 0x7C00
-bits 16
+MBALIGN equ 1 << 0
+MBINFO  equ 1 << 1
+MBFLAGS equ MBALIGN | MBINFO
+MAGIC   equ 0x1BADB002
+CHECKSUM equ -(MAGIC + MBFLAGS)
 
+
+section .multiboot
+align 4
+  dd MAGIC
+  dd MBFLAGS
+  dd CHECKSUM
+
+
+section .bss
+align 16
+stack_bottom:
+resb 16384
+stack_top:
+
+section .text
+global _start: function (_start.end - _start)
 _start:
-  xor ax, ax
-  mov ds, ax
+  mov esp, stack_top
+  extern kernel_main
+  call kernel_main
 
-  mov ss, ax
-  mov sp, 0x7e00
+  cli
 
-  mov si, msg
-  call print
-
-  cli 
+.hang:
   hlt
+  jmp .hang
 
-.halt:
-  jmp .halt
-
-print:
-  push ax
-  push bx
-  push si
-
-.loop:
-  lodsb
-  test al, al
-  jz .done
-
-  mov ah, 0Eh
-  mov bh, 0
-  int 10h
-
-  jmp .loop
-
-.done:
-  pop si
-  pop bx
-  pop ax
-  ret
-
-msg: db 'Hello, world!', 13, 10, 0
-times 510-($-$$) db 0
-
-dw 0xAA55
+.end:

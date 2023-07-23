@@ -1,23 +1,31 @@
-SRC_DIR=src/
-BUILD_DIR=build/
-
 ASM=nasm
-CC=gcc
+GCC=i686-elf-gcc
+LD=i686-elf-gcc
 
-.PHONY: all clean
+BUILD_DIR=build
+SRC_DIR=src
 
-all: floppy bootloader 
+.PHONY: all always boot kernel myos clean
 
-floppy: ${BUILD_DIR}/main_floppy.img
+all: always boot kernel myos
 
-${BUILD_DIR}/main_floppy.img: bootloader
-	dd if=/dev/zero of=${BUILD_DIR}/main_floppy.img bs=512 count=2880
-	dd if=${BUILD_DIR}/bootloader.bin of=${BUILD_DIR}/main_floppy.img seek=0 count=1 conv=notrunc
+boot: ${BUILD_DIR}/boot.o
 
-bootloader: ${BUILD_DIR}/bootloader.bin
+${BUILD_DIR}/boot.o:
+	${ASM}	-felf32 ${SRC_DIR}/boot.asm -o ${BUILD_DIR}/boot.o
 
-${BUILD_DIR}/bootloader.bin:
-	${ASM} ${SRC_DIR}/boot.asm -f bin -o ${BUILD_DIR}/bootloader.bin
+kernel: ${BUILD_DIR}/kernel.o
+
+${BUILD_DIR}/kernel.o:
+	${GCC} -c ${SRC_DIR}/kernel.c -o ${BUILD_DIR}/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+myos: ${BUILD_DIR}/myos.bin
+
+${BUILD_DIR}/myos.bin: boot kernel
+	${LD} -T ${SRC_DIR}/linker.ld -o ${BUILD_DIR}/myos.bin -ffreestanding -O2 -nostdlib ${BUILD_DIR}/boot.o ${BUILD_DIR}/kernel.o -lgcc
+
+always: 
+	mkdir -p build/
 
 clean:
 	rm -rf build/*

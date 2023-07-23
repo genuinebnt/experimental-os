@@ -1,5 +1,0 @@
-floppya: 1_44="build/main_floppy.img", status=inserted
-boot: floppy
-log: bochsout.txt
-display_library: x
-megs:32
