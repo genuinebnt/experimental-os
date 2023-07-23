@@ -1,0 +1,1 @@
+make clean && make all && qemu-system-i386 -kernel build/myos.bin
