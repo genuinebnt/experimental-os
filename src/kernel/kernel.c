@@ -1,4 +1,5 @@
 #include "stddef.h"
+#include "string.h"
 
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -48,36 +49,6 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color)
     return (uint16_t)uc | ((uint16_t)color << 8);
 }
 
-size_t strlen(const char *str)
-{
-    size_t len = 0;
-    while (str[len] != '\0')
-    {
-        len++;
-    }
-
-    return len;
-}
-
-void memcpy(const void *srcptr, void *dstptr, size_t size)
-{
-    unsigned char *dst = (unsigned char *)dstptr;
-    const unsigned char *src = (const unsigned char *)srcptr;
-    for (size_t i = 0; i < size; i++)
-    {
-        dst[i] = src[i];
-    }
-}
-
-void memset(void *dstptr, int value, size_t size)
-{
-    unsigned char *dst = (unsigned char *)dstptr;
-    for (size_t i = 0; i < size; i++)
-    {
-        dst[i] = (unsigned char)value;
-    }
-}
-
 void terminal_init()
 {
     terminal_row = 0;
@@ -115,6 +86,7 @@ void terminal_scroll()
 
 void terminal_delete_last_line()
 {
+    // memset(terminal_buffer + (VGA_WIDTH * 2) * (VGA_HEIGHT - 1), 0, VGA_WIDTH);
     for (size_t i = 0; i < VGA_WIDTH * 2; i++)
     {
         terminal_buffer[i + (VGA_WIDTH * 2) * (VGA_HEIGHT - 1)] = 0;
