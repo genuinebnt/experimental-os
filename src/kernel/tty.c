@@ -2,6 +2,12 @@
 #include "vga.h"
 #include "string.h"
 
+static uint8_t terminal_color;
+static uint16_t *terminal_buffer;
+
+static size_t terminal_row;
+static size_t terminal_column;
+
 void terminal_init()
 {
     terminal_row = 0;

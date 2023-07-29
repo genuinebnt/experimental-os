@@ -25,5 +25,12 @@ static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
 static const uint32_t VGA_MEMORY = 0xB8000;
 
-static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
-static inline uint16_t vga_entry(unsigned char uc, uint8_t color);
+inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)
+{
+  return fg | (bg << 4);
+}
+
+inline uint16_t vga_entry(unsigned char uc, uint8_t color)
+{
+  return (uint16_t)uc | ((uint16_t)color << 8);
+}

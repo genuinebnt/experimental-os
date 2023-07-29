@@ -13,5 +13,5 @@
 void kernel_main()
 {
     terminal_init();
-    printf("Hello world from the kernel!\n");
+    printf("Formatted %s %c %d %i %x %p %o %hd\r\n", "Hello world", 'z', 1234, 5678, 0xbeef, 0123, (short)27, (short)-42);
 }
