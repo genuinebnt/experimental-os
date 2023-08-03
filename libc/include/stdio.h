@@ -1,5 +1,5 @@
 #pragma once
-#include "stddef.h"
+#include <stdbool.h>
 
 void putc(char c);
 void puts(char *c);

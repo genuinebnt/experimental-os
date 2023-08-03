@@ -1,20 +1,5 @@
-#include "stdio.h"
-#include "stddef.h"
-#include "tty.h"
-
-void putc(char c)
-{
-    terminal_write(&c, 1);
-}
-
-void print(char *str)
-{
-    while (*str)
-    {
-        putc(*str);
-        str++;
-    }
-}
+#include <stdint.h>
+#include <stdio.h>
 
 #define PRINTF_STATE_NORMAL 0
 #define PRINTF_STATE_LENGTH 1

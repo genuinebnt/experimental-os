@@ -1,5 +1,7 @@
 #pragma once
-#include "stddef.h"
+
+#include <stdint.h>
+#include <stddef.h>
 
 void terminal_init();
 void terminal_putentryat(const char c, uint8_t terminal_color, size_t x, size_t y);

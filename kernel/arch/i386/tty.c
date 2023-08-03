@@ -1,6 +1,9 @@
-#include "tty.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
 #include "vga.h"
-#include "string.h"
+
+#include <kernel/tty.h>
 
 static uint8_t terminal_color;
 static uint16_t *terminal_buffer;
