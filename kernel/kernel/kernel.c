@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <kernel/tty.h>
 
 #if defined(__linux__)
@@ -12,5 +13,12 @@
 void kernel_main()
 {
     terminal_init();
-    printf("Formatted %s %c %d %i %x %p %o %hd\r\n", "Hello world", 'z', 1234, 5678, 0xbeef, 0123, (short)27, (short)-42);
+    char *src = "hello world";
+    char dst[14];
+    int bytes = strncpy(dst, src, strlen(src));
+    printf("Destination buffer: %s\n Source buffer: %s\n Bytes copied: %d", dst, src, bytes);
+    for (size_t i = 0; i < 50; i++)
+    {
+        printf("Hello %d\n", i);
+    }
 }

@@ -14,8 +14,8 @@ EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
  
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
+CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra -fstack-protector-all
+CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude -fstack-protector-all
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
 ASM:=$(ASM)
@@ -32,6 +32,7 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
+security/stack_protector.o
  
 OBJS=\
 $(ARCHDIR)/crti.o \
